@@ -7,7 +7,7 @@ labels = {'d':0, 'e':1, 'b':2, 'f':3, 'c':4}
 times = {'d':60, 'e':90, 'b':120, 'f':150, 'c':180}
 indices = ['d', 'e', 'b', 'f', 'c']
 
-DATA_DIRECTORY = "../0714_ITOsi_reports_tld"
+DATA_DIRECTORY = "0714_ITOsi_reports_tld"
 
 def read_csv(filename):
     with open(filename) as csvfile:

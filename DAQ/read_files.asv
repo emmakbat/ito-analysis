@@ -1,0 +1,24 @@
+files = dir('/home/emmabat/Programming/Python/ito-analysis/DAQ/*.mat');
+
+peak_heights = {};
+equilibrium_potentials = {};
+
+% hold on
+for i=1:length(files) 
+    output = load(files(i).name); 
+    output_cell = struct2cell(output);
+    for j=1:length(output_cell)
+        timedata = output_cell{j};
+        %plot(timedata.Time, timedata{:, 1})
+        
+        S = seconds(timedata.Time);
+        
+        % min(timedata{:, 1} should give height of nucleation peak  
+        peak_heights = [peak_heights, min(timedata{:, 1})];
+        
+        dydx = diff(timedata{:, 1})./diff(S);
+        zero_index = @(dydx) find(diff(sign(dydx)));
+        equilibrium_potentials = [equilibrium_potentials, zero_index(timedata{:, 1})];
+    end
+end
+

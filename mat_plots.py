@@ -11,8 +11,8 @@ old_w = scipy.io.loadmat('Tc_data/000w-Tc 2021-07-16 11-15-47 07_16_Tc_ITO_EB_23
 new_b = scipy.io.loadmat('Tc_data/1-Tc_1678-001bii_cropped.mat')
 new_e = scipy.io.loadmat('Tc_data/2-Tc_2345-001eii_cropped.mat')
 
-all_tcs = [old_c, old_n, old_q, old_w] #, new_b, new_e]
-labels = ['000c (DAQ 120s)', '000n (NSL 360 s)', '000q (oscope 360 s)', '000w (DAQ 120 s)'] #, '0001b (DAQ 120 s)', '0001e (DAQ 90 s)']
+all_tcs = [old_c, old_n, old_q, old_w, new_b, new_e]
+labels = ['000c (DAQ 120s)', '000n (NSL 360 s)', '000q (oscope 360 s)', '000w (DAQ 120 s)', '0001b (DAQ 120 s)', '0001e (DAQ 90 s)']
 
 temps = []
 normalized = []
@@ -20,14 +20,21 @@ for data, label in zip(all_tcs, labels):
     hightemp_r = data['RF'][0][np.argmax(data['TF'][0])]
     
     norm_r = []
+    rtc = 0
     for i, r in enumerate(data['RF'][0]):
         norm_r.append(r/hightemp_r)
         # get index of halfway point in resistivity curve
-        if np.abs(r/hightemp_r - 0.5) < 0.0008:
-            halfway_index = i 
+        if np.abs(r/hightemp_r - 0.5) <= np.abs(rtc/hightemp_r - 0.5):
+            rtc = r
+            halfway_index = i  
+
+    print(rtc/hightemp_r)
 
     halfway_temp = data['TF'][0][halfway_index]
     norm_temps = [temp - halfway_temp for temp in data['TF'][0]]
+
+    print(label + ' Tc:')
+    print(data['TF'][0][halfway_index])
 
     temps.append(data['TF'][0])
     normalized.append(norm_r)
