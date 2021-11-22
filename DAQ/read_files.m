@@ -4,7 +4,6 @@ peak_heights = {};
 equilibrium_potentials = {};
 labels = {};
 
-hold on
 for i=1:length(files) 
     output = load(files(i).name); 
     data_names = string(fieldnames(output));
@@ -13,6 +12,7 @@ for i=1:length(files)
         labels = [labels, data_names{j}];
         timedata = output_cell{j};
         plot(timedata.Time, timedata{:, 1})
+        saveas(gcf, strcat(data_names{j}, '.png'))
         
         S = seconds(timedata.Time);
         

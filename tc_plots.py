@@ -5,7 +5,7 @@ from os import listdir
 #from csv_plots import read_csv
 from scipy.signal import savgol_filter
 
-DATA_DIRECTORY = "Tc_0816"
+DATA_DIRECTORY = "Tc_1114"
 
 def plotSingleTcData(data, label='Tc Measurement'):
     plt.plot(data['TF'][0], data['RF'][0], linestyle='None', marker='o', markersize=3)

@@ -23,12 +23,19 @@ CORRECTION_TABLE = np.asarray(
     ]
 ).flatten()
 
-ito_einf = 4
-ito_mass_eff = 0.35*scipy.constants.m_e
+def ns_to_n(ns, t=1.3E-5):
+    return ns/t
 
-def plasma_freq(n):
-    # return plasma frequency of ITO at a given electron concentration
-    return np.sqrt(n*(scipy.constants.e)**2/(ito_einf*scipy.constants.epsilon_0*ito_mass_eff))
+def lambda_enz(ne, meff=0.35, epsinf=3.9):
+    return np.sqrt(4*np.pi**2*scipy.constants.c**2*meff*scipy.constants.m_e*epsinf*scipy.constants.epsilon_0/(scipy.constants.e**2*ne))*1E-3
+
+def plasma_freq(n, ito_einf=4, ito_mass_eff=0.35):
+    '''
+    n = carrier concentration [cm^-3]
+    returns plasma frequency of ITO at n [Hz]
+    '''
+    n = n*1E6
+    return np.sqrt((n*(scipy.constants.e)**2)/(ito_einf*scipy.constants.epsilon_0*ito_mass_eff*scipy.constants.m_e))
 
 def freq_to_wavelength(w):
     # return wavelength in nm at a given frequency
@@ -48,6 +55,27 @@ def correction_factor(length, width, spacing=0.2):
     row = width/spacing 
 
     return correction_function(np.stack([[column], [row]], -1))[0]
+
+def ns_hall_effect(voltage, current, mag_field, q=scipy.constants.e):
+    '''
+    voltage = measured Hall effect voltage
+    current = applied current
+    mag_field = applied magnetic field
+    q = charge of carrier
+
+    returns sheet carrier concentration determined by Hall effect
+    '''
+    return current*mag_field/(q*voltage)
+
+def mobility_hall_effect(ns, rs, q=scipy.constants.e):
+    '''
+    ns = sheet carrier concentration
+    rs = sheet resistance
+    q = charge of carrier
+
+    returns mobility of material
+    '''
+    return 1/(q*ns*rs)
 
 #ns = np.arange(1E21, 1E22, 1E19)
 
