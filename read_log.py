@@ -12,7 +12,9 @@ read_mat: returns dictionary {tf: [vals], rf:[vals], norm_rf: [vals]} by compari
             Tc meas. MAT file to ICE log dictionary
 '''
 
-DIRECTORY = '0628-directwide/'
+DIRECTORY1 = '0628-directwide/'
+DIRECTORY2 = '0629-directwide/'
+DIRECTORY3 = '0630-directwide/'
 
 def read_ice_log(filename):
     '''
@@ -79,9 +81,17 @@ def read_mat(filename, ice_log, edt=True, superconducting=True, override=False):
 
     return access_data
 
-ice_log = read_ice_log(DIRECTORY+'2022-06-28.log')
-data_1234 = read_mat(DIRECTORY+'Tc 2022-06-28 15-58-33 sample1234', ice_log, override=True)
-data_5678 = read_mat(DIRECTORY+'Tc 2022-06-28 16-55-21 sample5678.mat', ice_log, override=True)
+ice_log = read_ice_log(DIRECTORY1+'2022-06-28.log')
+#data_1234 = read_mat(DIRECTORY1+'Tc 2022-06-28 15-58-33 sample1234', ice_log, override=True)
+data_5678 = read_mat(DIRECTORY1+'Tc 2022-06-28 16-55-21 sample5678.mat', ice_log, override=True)
+
+ice_log29 = read_ice_log(DIRECTORY2+'2022-06-29.log')
+data_9101112 = read_mat(DIRECTORY2+'Tc 2022-06-29 16-11-50 sample9101112.mat', ice_log29, override=True)
+data_14151617 = read_mat(DIRECTORY2+'Tc 2022-06-29 16-31-34 sample14151617.mat', ice_log29, override=True)
+data_21222324 = read_mat(DIRECTORY2+'Tc 2022-06-29 16-46-11 sample21222324.mat', ice_log29, override=True)
+
+ice_log30 = read_ice_log(DIRECTORY3+'2022-06-30.log')
+data_1234 = read_mat(DIRECTORY3+'Tc 2022-06-30 14-34-44 sample1234.mat', ice_log30, override=True)
 
 '''
 ice_log22 = read_ice_log('Tc_1122/2021-11-22.log')
@@ -89,9 +99,15 @@ data_1234 = read_mat('Tc_1122/Tc 2021-11-22 12-13-30 11_22_Tc_ITO_EB_1234.mat', 
 data_5678 = read_mat('Tc_1122/Tc 2021-11-22 12-20-20 11_22_Tc_ITO_EB_5678.mat', ice_log22)
 data_9101112 = read_mat('Tc_1122/Tc 2021-11-22 12-26-51 11_22_Tc_ITO_EB_9101112.mat', ice_log22)'''
 
-s=4
-plt.scatter(data_1234['tf'], data_1234['log_rf'])
-plt.scatter(data_5678['tf'], data_5678['log_rf'])
+s=0.1
+plt.plot(data_1234['tf'], data_1234['log_rf'], label='2000 um')
+plt.plot(data_5678['tf'], data_5678['log_rf'], label='100 um')
+plt.plot(data_9101112['tf'], data_9101112['log_rf'], label='500 um')
+plt.plot(data_14151617['tf'], data_14151617['log_rf'], label='250 um')
+plt.plot(data_21222324['tf'], data_21222324['log_rf'], label='1000 um')
+plt.xlabel('Temperature [K]')
+plt.ylabel('Resistivity [Ohm]')
+plt.legend()
 plt.show()
 
 '''
