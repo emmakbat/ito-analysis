@@ -3,7 +3,7 @@ import scipy.io
 from scipy.interpolate import interp1d
 from numpy.polynomial.polynomial import Polynomial
 import matplotlib.pyplot as plt
-from nk_csvs import colorFader
+from nk_helpers import colorFader
 from plot_setup import plot_setup
 
 '''
@@ -135,11 +135,11 @@ data_9101112 = read_mat('Tc_1122/Tc 2021-11-22 12-26-51 11_22_Tc_ITO_EB_9101112.
 
 
 s=0.1
-plt.plot(data_1234['tf'], data_1234['log_rf'], label='2000 um')
-plt.plot(data_5678['tf'], data_5678['log_rf'], label='100 um')
-plt.plot(data_9101112['tf'], data_9101112['log_rf'], label='500 um')
-plt.plot(data_14151617['tf'], data_14151617['log_rf'], label='250 um')
-plt.plot(data_21222324['tf'], data_21222324['log_rf'], label='1000 um')
+plt.plot(data_5678['tf'], data_5678['log_rf'], label='100 um', color=YlOrBr[0])
+plt.plot(data_14151617['tf'], data_14151617['log_rf'], label='250 um', color=YlOrBr[1])
+plt.plot(data_9101112['tf'], data_9101112['log_rf'], label='500 um', color=YlOrBr[2])
+plt.plot(data_21222324['tf'], data_21222324['log_rf'], label='1000 um', color=YlOrBr[3])
+plt.plot(data_1234['tf'], data_1234['log_rf'], label='2000 um', color=YlOrBr[4])
 plt.xlabel('Temperature [K]')
 plt.ylabel('Resistivity [Ohm]')
 plt.legend()
