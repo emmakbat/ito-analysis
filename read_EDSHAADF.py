@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import numpy as np
+from plot_setup import plot_setup
 
 filepath = '/home/emmabat/Pictures/STEM/Sample-000c/EDS_1014/'
 filenames = [
@@ -16,18 +17,7 @@ filenames = [
 labels = ['Gold', 'Platinum', 'Indium', 'Tin', 'Sodium', 'Oxygen', 'Silicon']
 linestyles = [':', ':', '--', '-', '-', '--', '-.']
 
-SMALL_SIZE = 12
-MEDIUM_SIZE = 14
-BIGGER_SIZE = 16
-
-plt.rc('font', size=SMALL_SIZE)          # controls default text sizes
-plt.rc('axes', titlesize=SMALL_SIZE)     # fontsize of the axes title
-plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
-plt.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
-plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
-plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
-plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
-
+plot_setup(fig_y=7.2*4/5)
 
 def read_EDS_HAADF(filename):
     x = []
@@ -53,6 +43,7 @@ print(colors)
 colors[4] = 'springgreen'
 
 colors = ['#a89e79', '#8d8d8d', '#4e5f73', '#345249', '#f5462f', '#130b1a', '#000000']
+colors = ['#4477AA', '#EE6677', '#228833', '#CCBB44', '#66CCEE', '#AA3377', '#BBBBBB']
 
 for color, linestyle, label, filename in zip(colors, linestyles, labels, filenames):
     x, y = read_EDS_HAADF(filepath + filename)
@@ -66,4 +57,5 @@ plt.axvline(200) # nanoparticle edge'''
 plt.xlabel('Position [nm]')
 plt.ylabel('Intensity [counts]')
 plt.legend()
+plt.savefig('eds_haadf.svg')
 plt.show()

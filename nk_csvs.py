@@ -5,8 +5,14 @@ import matplotlib.pyplot as plt
 import scipy.constants as const
 from ray_optics import *
 from nk_helpers import *
+from plot_setup import plot_setup
+from scipy.io import savemat
+from scipy.interpolate import make_interp_spline
+
+plot_setup(fig_x=7.2, fig_y=4.6)
 
 colors = ['#929591', '#fac205','#c0fb2d','#02ab2e','#7efbb3','#253494']
+colors = ['#FB9A29', '#EC7014', '#CC4C02', '#993404', '#662506']
 color_gradient = ['#d4ad9d', '#4a352f']
 labels = {'b orig':0, 'd':1, 'e':2, 'b':3, 'f':4, 'c':5}
 times = {'d':60, 'e':90, 'b':120, 'f':150, 'c':180, 'b orig': 0}
@@ -24,18 +30,6 @@ Nb_n_file = "Nb_n_4k.txt"
 Nb_k_file = "Nb_k_4k.txt"
 OTHER_INDICES_NAMES = 'data/nks/Weaver_Nb.csv'
 
-SMALL_SIZE = 12
-MEDIUM_SIZE = 14
-BIGGER_SIZE = 16
-
-plt.rc('font', size=SMALL_SIZE)          # controls default text sizes
-plt.rc('axes', titlesize=SMALL_SIZE)     # fontsize of the axes title
-plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
-plt.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
-plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
-plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
-plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
-
 filenames = listdir(DATA_DIRECTORY)
 
 used_indices = []
@@ -52,6 +46,19 @@ nb_A = [100*absorbance(1, 0, nb_n, nb_k, omega, thickness, theta_i) for nb_n, nb
 nb_T = [100*transmittance(1, 0, nb_n, nb_k, omega, thickness, theta_i) for nb_n, nb_k, omega in zip(nb_ns, nb_ks, nb_omegas)]
 nb_R = [100*reflectance(1, 0, nb_n, nb_k, theta_i) for nb_n, nb_k, omega in zip(nb_ns, nb_ks, nb_omegas)]
 
+nb_data = {
+    'nbn': nb_ns,
+    'nbk': nb_ks,
+    'nbA': nb_A,
+    'nbT': nb_T,
+    'nbR': nb_R,
+    'nbwavelengths': nb_wl,
+    'thickness': thickness,
+    'angle_of_incidence': theta_i,
+    'source': 'Weaver'
+}
+
+savemat('nb_optics.mat', nb_data)
 
 low_wl = []
 low_A = []
@@ -105,22 +112,39 @@ for filename in filenames:
             wavelengths, ns, ks = read_csv(DATA_DIRECTORY + '/' + filename)
             omegas = [wavelength_to_w(wavelength*1E-9) for wavelength in wavelengths]
             eps1 = [e1(n, k) for n, k in zip(ns, ks)]
+            eps2 = [e2(n, k) for n, k in zip(ns, ks)]
 
             index = filename[0]
             # uncomment to have corresponding to actual NP layer thicknesses
             #thickness = thicknesses[labels[index]]
 
             ito_A = [100 * absorbance(1, 0, n, k, omega, thickness, theta_i) for n, k, omega in zip(ns, ks, omegas)]
+            print(ito_A)
             ito_R = [100 * reflectance(1, 0, n, k, theta_i) for n, k in zip(ns, ks)]
             ito_T = [100 * transmittance(1, 0, n, k, omega, thickness, theta_i) for n, k, omega in zip(ns, ks, omegas)]
             ito_skindepth = [penetration_depth(k, omega) for k, omega in zip(ks, omegas)]
+
+            ito_data = {
+                'n': ns,
+                'k': ks,
+                'eps1': eps1,
+                'eps2': eps2,
+                'A': ito_A,
+                'R': ito_R,
+                'T': ito_T,
+                'wavelengths': wavelengths,
+                'skindepth': ito_skindepth,
+                'thickness': thickness,
+                'angle_of_incidence': theta_i
+            }
+            savemat('ito_optics.mat', ito_data)
 
             for a, r, t in zip(ito_A, ito_R, ito_T):
                 if (a + r + t) - 100 > 1:
                     print('error! a + r + t = '+str(a + r + t))
 
-            color = colors[labels[index]]
-            color = colorFader(color_gradient[0], color_gradient[1], (labels[index]-1)/(len(indices)-1))
+            color = colors[labels[index]-1]
+            #color = colorFader(color_gradient[0], color_gradient[1], (labels[index]-1)/(len(indices)-1))
 
             if plot_type == 'n':
                 y = ns
@@ -168,7 +192,7 @@ for filename in filenames:
         elif plot_type == 'T':
             y = ito_T
         all_y.extend(y)
-        #plt.plot(wavelengths, y, '--', color='black', label='b orig')
+        plt.plot(wavelengths, y, '--', color='black', label='b orig')
 
 plt.xlabel('Wavelengths [nm]')
 if plot_type == 'n':
@@ -206,6 +230,8 @@ ax.legend(handles, labels)
 
 #wavelengths, ns, ks = read_csv('../000c-L.csv')
 #plt.plot(wavelengths, ns, color='red')
+plt.ylim(ymin = 0)
+plt.savefig(plot_type+'_ito'+str(thickness)+'nm_'+str(theta_i)+'.svg')
 plt.show()
 
 ns, ks = index_to_nk['b']
@@ -214,12 +240,16 @@ ito_A = [100 * absorbance(1, 0, n, k, omega, thickness, theta_i) for n, k, omega
 ito_R = [100 * reflectance(1, 0, n, k, theta_i) for n, k in zip(ns, ks)]
 ito_T = [100 * transmittance(1, 0, n, k, omega, thickness, theta_i) for n, k, omega in zip(ns, ks, omegas)]
 
-plt.plot(wavelengths, ito_A, color='gray', label='ITO nanoparticles')
-plt.plot(low_wl, low_coeff, '--', color='black', label='Nb')
-plt.ylim((0, 100))
+
+spl = make_interp_spline(low_wl, low_coeff, k=2)
+
+plt.plot(wavelengths, spl(wavelengths)/np.array(ito_A), color='gray', label='ITO nanoparticles')
+#plt.plot(low_wl, spl(low_wl), '--', color='black', label='Nb')
+#plt.ylim((0, 100))
 plt.xlabel('Wavelengths [nm]')
 plt.ylabel(ylabel)
 plt.legend()
+plt.savefig(plot_type+'_ITOvsNb'+str(thickness)+'nm_'+str(theta_i)+'.svg')
 plt.show()
 
 itoas = []

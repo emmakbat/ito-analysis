@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-from matplotlib.pyplot import figure
 
 def plot_setup(fig_x=7.2, fig_y=4.6, dpi=80, SMALL_SIZE=12, MEDIUM_SIZE=14, BIGGER_SIZE=16, bottom_buffer=0.3, left_buffer=0.15):
     plt.rc('font', size=SMALL_SIZE)          # controls default text sizes
@@ -11,6 +10,4 @@ def plot_setup(fig_x=7.2, fig_y=4.6, dpi=80, SMALL_SIZE=12, MEDIUM_SIZE=14, BIGG
     plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
     plt.rc('figure', figsize=(fig_x, fig_y))
     plt.rc('figure', dpi=dpi)
-    plt.gcf().subplots_adjust(bottom=bottom_buffer)
-    plt.gcf().subplots_adjust(left=left_buffer)
     return 

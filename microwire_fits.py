@@ -7,8 +7,9 @@ from scipy.signal import savgol_filter
 import numpy as np
 from nk_helpers import colorFader
 from plot_setup import plot_setup
+from scipy.io import savemat
 
-plot_setup()
+plot_setup(fig_x=7.2, fig_y=4.6)
 
 cg2 = '#d4ad9d'
 cg1 = '#4a352f'
@@ -30,6 +31,7 @@ filenames = ['Isw_curve 2022-05-20 14-15-13 ITO_wires_W1_T=1p3.mat',
 FILEPATH = 'data/patterned_widewires/'
 # Tc filenames
 filename = filenames[0]
+filename2 = ''
 #filename2 = 'Isw_curve 2022-05-11 15-20-16 Emma_piece_.mat'
 iv = True
 fourpoint = True
@@ -43,18 +45,19 @@ fourpoint = True
 filename = 'Isw_curve 2022-04-15 14-40-56 ITOmill_1_iv__T=300mK.mat'
 iv = True'''
 
-
-
 plot_widths = np.linspace(min(widths), max(widths), 300)
 spl = make_interp_spline(widths, ics, k=2)
 smooth_ic = spl(plot_widths)
 
+plt.figure()
+plt.gcf().subplots_adjust(bottom=0.2)
 plt.plot(plot_widths, smooth_ic, color='black', linestyle='--')
 #plt.scatter(widths, ics, color='black')
 for i, point in enumerate(widths):
     plt.scatter(point, ics[i], color=np.flip(YlOrBr)[i+1])
 plt.xlabel('Width [mm]')
 plt.ylabel('Isw [mA]')
+plt.savefig('Isw_vs_width.svg')
 plt.show()
 
 def moving_average(data, window_width):
@@ -73,17 +76,24 @@ def get_tc_data(filename, num_points=100):
     return t, r, contact_resistance
 
 if iv:
+    iv_dict = {}
     for i, (filename, label) in enumerate(zip(filenames, labels)):
         iv_data = loadmat(FILEPATH+filename)
         i_device = iv_data['I_device'][0]
         v_device = iv_data['V_device'][0]
+        print(label)
 
-        plt.plot(v_device, [xi * 1000 for xi in i_device], label=label, color=YlOrBr[i])#, color=colorFader(cg1, cg2, i/(len(labels)-1)))
+        plt.figure()
+        plt.plot(v_device, [xi * 1000 for xi in i_device], label=label, color='black')#, color=colorFader(cg1, cg2, i/(len(labels)-1)))
         #plt.scatter(v_device, [xi * 1000 for xi in i_device], color='black')
         plt.xlabel('Voltage [V]')
         plt.ylabel('Current [mA]')
-    plt.legend()
-    plt.show()
+        plt.legend()
+        plt.savefig(label+'_iv.svg')
+        plt.show()
+        iv_dict[label+'_i'] = i_device
+        iv_dict[label+'_v'] = v_device
+    savemat('widewires_iv.mat', iv_data)
 
     if not fourpoint:
         y, x = zip(*sorted(zip(v_device, i_device)))

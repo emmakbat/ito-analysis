@@ -5,7 +5,7 @@ from os import listdir
 #from csv_plots import read_csv
 from scipy.signal import savgol_filter
 
-DATA_DIRECTORY = "Tc_1122"
+DATA_DIRECTORY = "data/Tc_data/Tc_1122"
 
 def plotSingleTcData(data, label='Tc Measurement'):
     plt.plot(data['TF'][0], data['RF'][0], linestyle='None', marker='o', markersize=3)
@@ -86,6 +86,7 @@ filenames = listdir(DATA_DIRECTORY)
 all_tc_data = []
 labels = []
 for filename in filenames:
+    print(filename)
     if filename.endswith('.mat'):
         tc_data = scipy.io.loadmat(DATA_DIRECTORY + '/' + filename)
         label = filename[-8:-4]
