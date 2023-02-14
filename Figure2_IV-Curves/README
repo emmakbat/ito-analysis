@@ -1,0 +1,5 @@
+- IV/
+    - Contains all raw I-V data relevant to microwires
+-./
+    - microwire_IV.py: run this to reproduce I-V plots of microwires; based on data in data/IV
+    - widewires_iv.mat: a slightly nicer formatting of the raw data

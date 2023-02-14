@@ -1,0 +1,3 @@
+[submodule "Figure4_XPS-depth/vamas-xps"]
+	path = Figure4_XPS-depth/vamas-xps
+	url = https://github.com/qnngroup/vamas-xps.git

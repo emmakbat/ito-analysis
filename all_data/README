@@ -1,0 +1,19 @@
+scripts and helpers for analyzing reduced ITO data
+
+basic_fits.py: to check for linear regression fits on optical model data vs reduction time
+csv_plots.py: old, was a helper for plotting miscellaneous data
+daq_summary.py: old, for plotting voltage vs time data from galvanostatic electrochemical reactions
+mat_plots.py: for plotting Tc data from .MAT files
+microwire_fits.py: for plotting data relevant to the microwire structures
+misc_physics.py: for miscellaneous physics calculations such as sheet resistance from 4pt probe measurements
+nk_csvs.py: for plotting refractive index vs wavelength and computing and plotting absorbance, transmittance, and reflectance from refractive index
+nk_helpers.py: for calculations relating to refractive index vs wavelength
+plot_setup.py: old, helper function for use with matplotlib
+plotting.py: old, helper function for use with matplotlib
+ray_optics.py: helper functions for computing absorbance, transmittance, and reflectance from refractive index
+read_EDSHAADF.py: for plotting high-angle annular dark field EDS data from MIT.nano
+read_log.py: for plotting Tc data that required cross-reference with temperature logs, namely that of the microwire structures
+tc_icelog_helpers.py: helper functions for cross-referencing temperature logs
+tc_plots.py: for plotting Tc data, namely that of the ITO on silicon samples
+
+

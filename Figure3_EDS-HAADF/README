@@ -1,0 +1,4 @@
+- SAMPLE-000C/
+    - All STEM data produced from the reduced ITO lamella from the 0th ITO-on-silicon wafer, reduced to about 75 uC/cm2 (i.e. sample 000c)
+- ./
+    - read_EDSHAADF.py: reproduces the EDS plot in Figure 3 from the raw data

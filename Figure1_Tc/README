@@ -1,0 +1,6 @@
+- TC/
+    - raw Tc data for microwires
+- ./
+    - microwire_Tc.py: plots the transition temperature curves for the microwires
+    - tc_icelog_helpers.py: helper functions for matching timestamps to cryostat temperature
+    - widewire_tc.mat: a slightly nicer formatting of the raw data, plus data with resistivity offset so R(T=0) = 0 exactly for nicer plotting

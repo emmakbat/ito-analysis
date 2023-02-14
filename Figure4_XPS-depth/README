@@ -1,0 +1,8 @@
+- VAMAS-XPS/
+    - Submodule of a second GitHub repository that can be used to parse the raw XPS data
+- XPS_DATA/
+    - 211123/211124/211206/211216/
+        - folders containing various raw XPS data
+    - CONFIGS/
+        - config files to use with vamas-xps parser to parse raw XPS data. sample labels are contained within; data labeled with [letter][roman numeral] (e.g. Fii) is from the second wafer of ITO on silicon, while data labeled with ITOSA[number][letter][roman numeral] (e.g. ITOSA5ei) is from various ITO on glass slides from Sigma Aldrich
+        - note that "spectra" give surface-level data which is not so useful due to surface contamination, while "depth" profiles give spectra taken in between argon ion milling through the sample

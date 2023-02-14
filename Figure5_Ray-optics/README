@@ -1,0 +1,7 @@
+- NKS/ITO3/
+    - Contains the complex refractive index data extracted from the ten samples of reduced ITO-on-silicon from wafer 001 that are used in the paper. Note that there are other ways to interpret the raw reflectance ratio data, and n-k results extracted from other models are given in ito-analysis/all_data/data/nks. In the end, different interpretations did not differ much in predicted absorption, but the model selected here had both a high R2 and a straightforward physical interpretation 
+    - PDFS/
+        - Truly raw reflectance data is difficult to output from the machine, but raw reflectance data is plotted against the predicted reflectance data from extracted complex refractive index in these PDFs directly output from the machine
+- optics_plots.py: based on value of plot_type variable: plot 'n' or 'k' data as output by ellipsometer; or calculate and plot either 'A' (absorption) 'R' (reflection) or 'T' (transmission) or 'd' (skin depth) for reduced ITO (based on data in nks/ito3) vs niobium films of a given thickness and angle of incidence and save the calculated data to a .MAT file
+- nk_helpers.py: basic parsing and physics helper functions
+- ray_optics.py: implements functions representing the physics governing reflectance/transmission/absorption for light incident upon an asborbing thin film, used for calculations in optics_plots
