@@ -28,7 +28,11 @@ DATA_DIRECTORY = "nks/ito3"
 LITERATURE_DATA_DIRECTORY = "/home/emmabat/Documents/material_data/material_data_for_COMSOL/"
 Nb_n_file = "Nb_n_4k.txt"
 Nb_k_file = "Nb_k_4k.txt"
+<<<<<<< HEAD:all_data/nk_csvs.py
 OTHER_INDICES_NAMES = 'nks/Weaver_Nb.csv'
+=======
+OTHER_INDICES_NAMES = 'data/nks/Weaver_Nb.csv'
+>>>>>>> a60494862f3b2f95fd4d413ba3dd3b72167bbd92:nk_csvs.py
 
 filenames = listdir(DATA_DIRECTORY)
 
