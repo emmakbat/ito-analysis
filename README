@@ -1,8 +1,4 @@
-<<<<<<< HEAD
+
 Data and plot-producing code associated with "Reduced ITO for Transparent Superconducting Electronics"
 
 Miscellaneous data are in the folder all_data, whose README contains a table of contents for the various scripts within. Data associated with particular figures from the paper are in the corresponding folders, along with scripts to reproduce the paper figures, formatting not guaranteed.
-
-=======
-scripts and helpers for analyzing reduced ITO data
->>>>>>> a60494862f3b2f95fd4d413ba3dd3b72167bbd92
